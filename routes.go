@@ -1,0 +1,105 @@
+package main
+
+import (
+	"encoding/json"
+	"net/http"
+	"strconv"
+
+	"github.com/MixinNetwork/mixin-wallet/mixin"
+	"github.com/MixinNetwork/mixin-wallet/views"
+	"github.com/dimfeld/httptreemux"
+)
+
+var node string
+
+func init() {
+	node = "http://35.188.235.212:8239"
+}
+
+func RegisterRoutes(router *httptreemux.TreeMux) {
+	router.GET("/height", getHeight)
+	router.GET("/snapshots", getSnapshots)
+	router.GET("/snapshots/:id", getSnapshot)
+	router.GET("/transactions/:id", getTransaction)
+	router.POST("/transactions", postRaw)
+}
+
+func getHeight(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	rpc := mixin.NewMixinNetwork(node)
+	nodeInfo, err := rpc.GetInfo()
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, map[string]interface{}{"height": nodeInfo.Graph.Topology})
+}
+
+func getSnapshots(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	rpc := mixin.NewMixinNetwork(node)
+	s := r.URL.Query().Get("offset")
+	c := r.URL.Query().Get("limit")
+	var since, count uint64
+	var err error
+	if s != "" {
+		since, err = strconv.ParseUint(s, 10, 64)
+		if err != nil {
+			views.RenderErrorResponse(w, r, err)
+			return
+		}
+	}
+	if c != "" {
+		count, err = strconv.ParseUint(c, 10, 64)
+		if err != nil {
+			views.RenderErrorResponse(w, r, err)
+			return
+		}
+	}
+	snapshots, err := rpc.ListSnapshotsSince(since, count)
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, snapshots)
+}
+func getSnapshot(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	rpc := mixin.NewMixinNetwork(node)
+	since, err := strconv.ParseUint(params["id"], 10, 64)
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	snapshots, err := rpc.ListSnapshotsSince(since, 1)
+	if err != nil || len(snapshots) != 1 {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, snapshots[0])
+}
+
+func getTransaction(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	rpc := mixin.NewMixinNetwork(node)
+	transaction, err := rpc.GetTransaction(params["id"])
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, transaction)
+}
+
+func postRaw(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	var body struct {
+		Raw string `json:"raw"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&body)
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	rpc := mixin.NewMixinNetwork(node)
+	txId, err := rpc.SendRawTransaction(body.Raw)
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, map[string]interface{}{"transaction_hash": txId})
+}
