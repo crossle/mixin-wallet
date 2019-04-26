@@ -72,6 +72,22 @@ func (m *MixinNetwork) SendRawTransaction(raw string) (string, error) {
 	return tx.Hash, err
 }
 
+func (m *MixinNetwork) GetTransactionUTXO(hash string, viewKey string) ([]*UTXO, error) {
+	if viewKey == "" {
+		return nil, fmt.Errorf("No view key for this transaction %s", hash)
+	}
+	tx, err := m.GetTransaction(hash)
+	if err != nil {
+		return nil, err
+	}
+	key, err := ParseKeyFromHex(viewKey)
+	if err != nil {
+		return nil, err
+	}
+	utxos := tx.UTXOs(key)
+	return utxos, err
+}
+
 func (m *MixinNetwork) GetTransaction(hash string) (*Transaction, error) {
 	body, err := m.callRPC("gettransaction", []interface{}{hash})
 	if err != nil {

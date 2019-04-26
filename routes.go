@@ -20,6 +20,7 @@ func RegisterRoutes(router *httptreemux.TreeMux) {
 	router.GET("/height", getHeight)
 	router.GET("/snapshots", getSnapshots)
 	router.GET("/snapshots/:id", getSnapshot)
+	router.GET("/transactions/:id/utxo", getTransactionUTXO)
 	router.GET("/transactions/:id", getTransaction)
 	router.POST("/transactions", postRaw)
 }
@@ -84,6 +85,17 @@ func getTransaction(w http.ResponseWriter, r *http.Request, params map[string]st
 		return
 	}
 	views.RenderDataResponse(w, r, transaction)
+}
+
+func getTransactionUTXO(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	rpc := mixin.NewMixinNetwork(node)
+	viewKey := r.URL.Query().Get("view")
+	utxos, err := rpc.GetTransactionUTXO(params["id"], viewKey)
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, utxos)
 }
 
 func postRaw(w http.ResponseWriter, r *http.Request, params map[string]string) {

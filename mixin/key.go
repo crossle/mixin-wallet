@@ -34,3 +34,31 @@ func ParseKeyFromHex(src string) (crypto.Key, error) {
 	copy(key[:], data)
 	return key, nil
 }
+
+func generateAddress(viewKey, spendKey string) (*common.Address, error) {
+	seed := make([]byte, 64)
+	_, err := rand.Read(seed)
+	if err != nil {
+		return nil, err
+	}
+	addr := common.NewAddressFromSeed(seed)
+	if viewKey != "" {
+		key, err := hex.DecodeString(viewKey)
+		if err != nil {
+			return nil, err
+		}
+		copy(addr.PrivateViewKey[:], key)
+		addr.PublicViewKey = addr.PrivateViewKey.Public()
+	}
+
+	key, err := hex.DecodeString(spendKey)
+	if err != nil {
+		return nil, err
+	}
+	copy(addr.PrivateSpendKey[:], key)
+	addr.PublicSpendKey = addr.PrivateSpendKey.Public()
+	fmt.Printf("address:\t%s\n", addr.String())
+	fmt.Printf("view key:\t%s\n", addr.PrivateViewKey.String())
+	fmt.Printf("spend key:\t%s\n", addr.PrivateSpendKey.String())
+	return &addr, nil
+}
