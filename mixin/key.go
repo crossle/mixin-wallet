@@ -35,7 +35,7 @@ func ParseKeyFromHex(src string) (crypto.Key, error) {
 	return key, nil
 }
 
-func generateAddress(viewKey, spendKey string) (*common.Address, error) {
+func LocalGenerateAddress(viewKey, spendKey string) (*common.Address, error) {
 	seed := make([]byte, 64)
 	_, err := rand.Read(seed)
 	if err != nil {
