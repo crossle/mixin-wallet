@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/MixinNetwork/mixin-wallet/durable"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/unrolled/render"
 )
@@ -20,6 +21,11 @@ const (
 	keyAuthorizationInfo contextValueKey = 12
 	keyRequestBody       contextValueKey = 13
 )
+
+func Database(ctx context.Context) *durable.Database {
+	v, _ := ctx.Value(keyDatabase).(*durable.Database)
+	return v
+}
 
 func Render(ctx context.Context) *render.Render {
 	v, _ := ctx.Value(keyRender).(*render.Render)
@@ -44,6 +50,10 @@ func RequestBody(ctx context.Context) string {
 func AuthorizationInfo(ctx context.Context) jwt.MapClaims {
 	v, _ := ctx.Value(keyAuthorizationInfo).(jwt.MapClaims)
 	return v
+}
+
+func WithDatabase(ctx context.Context, database *durable.Database) context.Context {
+	return context.WithValue(ctx, keyDatabase, database)
 }
 
 func WithRender(ctx context.Context, render *render.Render) context.Context {
