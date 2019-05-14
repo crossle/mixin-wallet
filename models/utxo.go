@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/base64"
 	"fmt"
+	"time"
 
 	"github.com/MixinNetwork/mixin-wallet/mixin"
 	"github.com/MixinNetwork/mixin-wallet/session"
@@ -44,6 +45,7 @@ type UTXO struct {
 	Mask            string
 	Extra           string
 	SpentBy         string
+	CreatedAt       time.Time
 }
 
 const (
@@ -55,7 +57,7 @@ func queryForRow(utxoId string) {
 
 }
 
-func CreateOrUpdateUTXOs(ctx context.Context, tx *mixin.Transaction) error {
+func CreateOrUpdateUTXOs(ctx context.Context, tx *mixin.Transaction, timestamp uint64) error {
 	for _, input := range tx.Inputs {
 		if input.Hash == "" {
 			continue
@@ -91,6 +93,7 @@ func CreateOrUpdateUTXOs(ctx context.Context, tx *mixin.Transaction) error {
 			State:           UTXOStateUnspent,
 			Mask:            output.Mask.String(),
 			Extra:           tx.Extra,
+			CreatedAt:       time.Unix(0, int64(timestamp)),
 		}
 		var keys []string
 		for _, k := range output.Keys {

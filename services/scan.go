@@ -42,7 +42,7 @@ func (service *ScanService) loopSnapshots(ctx context.Context) {
 		for _, s := range snapshots {
 			checkpoint = s.Topology
 			tx := &s.Transaction
-			if err := models.CreateOrUpdateUTXOs(ctx, tx); err != nil {
+			if err := models.CreateOrUpdateUTXOs(ctx, tx, s.Timestamp); err != nil {
 				log.Println(err)
 				break
 			}
