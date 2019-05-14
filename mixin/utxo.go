@@ -10,15 +10,15 @@ import (
 )
 
 type UTXO struct {
-	Asset    string
-	Hash     string
-	Index    int
-	Amount   number.Decimal
-	Receiver string
-	TraceId  string
+	Asset    string         `json:"asset"`
+	Hash     string         `json:"hash"`
+	Index    int            `json:"index"`
+	Amount   number.Decimal `json:"amount"`
+	Receiver string         `json:"receiver"`
+	Extra    string         `json:"extra"`
 
-	Key  crypto.Key
-	Mask crypto.Key
+	Key  crypto.Key `json:"key,omitempty"`
+	Mask crypto.Key `json:"mask,omitempty"`
 }
 
 func (tx *Transaction) Deposit() *common.DepositData {
@@ -52,7 +52,7 @@ func (tx *Transaction) UTXOs(view crypto.Key) []*UTXO {
 		utxo.Receiver = pub.String()
 
 		tb, _ := hex.DecodeString(tx.Extra)
-		utxo.TraceId = uuid.FromBytesOrNil(tb).String()
+		utxo.Extra = uuid.FromBytesOrNil(tb).String()
 		utxos = append(utxos, utxo)
 	}
 
