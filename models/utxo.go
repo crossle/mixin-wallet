@@ -67,7 +67,9 @@ func CreateOrUpdateUTXOs(ctx context.Context, tx *mixin.Transaction) error {
 			if err := txn.QueryRowContext(ctx, query, utxoId).Scan(&u.UTXOId); err != nil {
 				return err
 			}
-
+			if u.OutputIndex != input.Index {
+				return fmt.Errorf("erorr transaction index: %s %d", input.Hash, input.Index)
+			}
 			_, err := txn.ExecContext(ctx, "UPDATE utxos SET spent_by = $1, state = $2 WHERE utxo_id = $3", tx.Hash, UTXOStateSpent, utxoId)
 			return err
 		})
