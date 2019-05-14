@@ -13,6 +13,10 @@ import (
 
 type ScanService struct{}
 
+const (
+	count uint64 = 200
+)
+
 var node string
 
 func init() {
@@ -26,7 +30,6 @@ func (service *ScanService) Run(ctx context.Context) error {
 
 func (service *ScanService) loopSnapshots(ctx context.Context) {
 	rpc := mixin.NewMixinNetwork(node)
-	count := uint64(100)
 	for {
 		checkpoint, err := readSnapshotCheckPoint(ctx)
 		if err != nil {
