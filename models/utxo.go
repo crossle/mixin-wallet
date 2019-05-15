@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS utxos (
 	transaction_hash VARCHAR(64) NOT NULL,
 	created_at        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
+CREATE INDEX IF NOT EXISTS index_utxos_state ON utxos(state);
 `
 
 type UTXO struct {
