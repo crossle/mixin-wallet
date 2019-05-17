@@ -47,7 +47,7 @@ type SnapshotWithTransaction struct {
 }
 
 type NodeInfo struct {
-	Network string `json:"string"`
+	Network string `json:"network"`
 	Node    string `json:"node"`
 	Version string `json:"version"`
 	Uptime  string `json:"uptime"`
