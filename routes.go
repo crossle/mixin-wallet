@@ -17,6 +17,7 @@ func init() {
 }
 
 func RegisterRoutes(router *httptreemux.TreeMux) {
+	router.GET("/getinfo", getNodeInfo)
 	router.GET("/height", getHeight)
 	router.GET("/snapshots", getSnapshots)
 	router.GET("/snapshots/:id", getSnapshot)
@@ -25,6 +26,19 @@ func RegisterRoutes(router *httptreemux.TreeMux) {
 	router.POST("/transactions", postRaw)
 }
 
+func getNodeInfo(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	n := r.URL.Query().Get("node")
+	if n == "" {
+		n = node
+	}
+	rpc := mixin.NewMixinNetwork(n)
+	nodeInfo, err := rpc.GetInfo()
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, nodeInfo)
+}
 func getHeight(w http.ResponseWriter, r *http.Request, params map[string]string) {
 	rpc := mixin.NewMixinNetwork(node)
 	nodeInfo, err := rpc.GetInfo()

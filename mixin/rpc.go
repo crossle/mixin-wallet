@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/MixinNetwork/go-number"
@@ -135,8 +136,12 @@ func (m *MixinNetwork) callRPC(method string, params []interface{}) ([]byte, err
 	if err != nil {
 		return nil, err
 	}
+	endpoint := "http://" + m.node
+	if strings.HasPrefix(m.node, "http") {
+		endpoint = m.node
+	}
 
-	req, err := http.NewRequest("POST", m.node, bytes.NewReader(body))
+	req, err := http.NewRequest("POST", endpoint, bytes.NewReader(body))
 	if err != nil {
 		return nil, err
 	}
