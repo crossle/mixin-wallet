@@ -1,8 +1,8 @@
 package config
 
 const (
-	DatebaseUser     = "crossle"
-	DatabasePassword = ""
+	DatebaseUser     = "postgres"
+	DatabasePassword = "postgres"
 	DatabaseHost     = "localhost"
 	DatabasePort     = "5432"
 	DatabaseName     = "postgres"
