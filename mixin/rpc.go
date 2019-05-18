@@ -51,8 +51,19 @@ type NodeInfo struct {
 	Node    string `json:"node"`
 	Version string `json:"version"`
 	Uptime  string `json:"uptime"`
-	Graph   struct {
-		Topology int64 `json:"topology"`
+	Queue   struct {
+		Caches       int64 `json:"caches"`
+		Finals       int64 `json:"finals"`
+		Transactions int64 `json:"transactions"`
+	} `json:"queue"`
+	Graph struct {
+		Topology  int64 `json:"topology"`
+		Consensus []struct {
+			Node   string `json:"node"`
+			Payee  string `json:"payee"`
+			Signer string `json:"signer"`
+			State  string `json:"state"`
+		} `json:"consensus"`
 	} `json:"graph"`
 }
 
