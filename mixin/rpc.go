@@ -59,10 +59,11 @@ type NodeInfo struct {
 	Graph struct {
 		Topology  int64 `json:"topology"`
 		Consensus []struct {
-			Node   string `json:"node"`
-			Payee  string `json:"payee"`
-			Signer string `json:"signer"`
-			State  string `json:"state"`
+			Node      string `json:"node"`
+			Payee     string `json:"payee"`
+			Signer    string `json:"signer"`
+			State     string `json:"state"`
+			Timestamp string `json:"timestamp"`
 		} `json:"consensus"`
 	} `json:"graph"`
 }
