@@ -63,7 +63,7 @@ type NodeInfo struct {
 			Payee     string `json:"payee"`
 			Signer    string `json:"signer"`
 			State     string `json:"state"`
-			Timestamp string `json:"timestamp"`
+			Timestamp int64  `json:"timestamp"`
 		} `json:"consensus"`
 	} `json:"graph"`
 }
