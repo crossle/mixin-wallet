@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"log"
+	"time"
 
 	"github.com/MixinNetwork/mixin-wallet/session"
 )
@@ -33,7 +34,7 @@ func CreateSnapshot(ctx context.Context, hash string, topology, timestamp int64,
 		switch {
 		case err == sql.ErrNoRows:
 			query := "INSERT INTO snapshots (hash, transaction_hash, topology, timestamp) VALUES ($1, $2, $3, $4)"
-			_, err := txn.ExecContext(ctx, query, hash, transactionHash, topology, timestamp)
+			_, err := txn.ExecContext(ctx, query, hash, transactionHash, topology, time.Unix(0, timestamp))
 			if err != nil {
 				return err
 			}
