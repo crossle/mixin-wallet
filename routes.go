@@ -25,6 +25,7 @@ func RegisterRoutes(router *httptreemux.TreeMux) {
 	router.GET("/snapshots/:id", getSnapshot)
 	router.GET("/transactions/:id/utxo", getTransactionUTXO)
 	router.GET("/transactions/:id", getTransaction)
+	router.GET("/transactions/:id/snapshot", getTransactionSnapshot)
 	router.POST("/transactions", postRaw)
 	router.GET("/account/:id", getAccount)
 }
@@ -55,6 +56,7 @@ func getNodeInfo(w http.ResponseWriter, r *http.Request, params map[string]strin
 	}
 	views.RenderDataResponse(w, r, nodeInfo)
 }
+
 func getHeight(w http.ResponseWriter, r *http.Request, params map[string]string) {
 	rpc := mixin.NewMixinNetwork(node)
 	nodeInfo, err := rpc.GetInfo()
@@ -92,6 +94,7 @@ func getSnapshots(w http.ResponseWriter, r *http.Request, params map[string]stri
 	}
 	views.RenderDataResponse(w, r, snapshots)
 }
+
 func getSnapshot(w http.ResponseWriter, r *http.Request, params map[string]string) {
 	rpc := mixin.NewMixinNetwork(node)
 	id := params["id"]
@@ -120,6 +123,16 @@ func getTransaction(w http.ResponseWriter, r *http.Request, params map[string]st
 		return
 	}
 	views.RenderDataResponse(w, r, transaction)
+}
+
+func getTransactionSnapshot(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	id := params["id"]
+	snapshot, err := models.QuerySnapshotByTransactionHash(r.Context(), id)
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, snapshot)
 }
 
 func getTransactionUTXO(w http.ResponseWriter, r *http.Request, params map[string]string) {

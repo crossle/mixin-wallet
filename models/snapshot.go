@@ -18,20 +18,21 @@ CREATE TABLE IF NOT EXISTS snapshots (
 	timestamp        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS index_snapshots_topology ON snapshots(topology);
+CREATE INDEX IF NOT EXISTS index_snapshots_transaction_hash ON snapshots(transaction_hash);
 `
 
 type Snapshot struct {
-	Hash            string
-	Topology        int64
-	Timestamp       int64
-	TransactionHash string
+	Hash            string `json:"hash"`
+	Topology        int64  `json:"topology"`
+	Timestamp       int64  `json:"timestamp"`
+	TransactionHash string `json:"transaction_hash"`
 }
 
 func CreateSnapshot(ctx context.Context, hash string, topology, timestamp int64, transactionHash string) error {
 	err := session.Database(ctx).RunInTransaction(ctx, func(ctx context.Context, txn *sql.Tx) error {
-		var s Snapshot
-		query := "SELECT hash FROM snapshots WHERE hash=$1"
-		err := txn.QueryRowContext(ctx, query, hash).Scan(&s.Hash)
+		query := "SELECT hash, transaction_hash, topology, timestamp FROM snapshots WHERE hash=$1"
+		row := txn.QueryRowContext(ctx, query, hash)
+		_, err := snapshotFromRow(row)
 		switch {
 		case err == sql.ErrNoRows:
 			query := "INSERT INTO snapshots (hash, transaction_hash, topology, timestamp) VALUES ($1, $2, $3, $4)"
@@ -52,6 +53,18 @@ func CreateSnapshot(ctx context.Context, hash string, topology, timestamp int64,
 func QuerySnapshotByHash(ctx context.Context, hash string) (*Snapshot, error) {
 	query := "SELECT hash, transaction_hash, topology, timestamp FROM snapshots WHERE hash=$1"
 	row := session.Database(ctx).QueryRowContext(ctx, query, hash)
+	snapshot, err := snapshotFromRow(row)
+	if err == sql.ErrNoRows {
+		return &Snapshot{}, nil
+	} else if err != nil {
+		return nil, session.TransactionError(ctx, err)
+	}
+	return snapshot, nil
+}
+
+func QuerySnapshotByTransactionHash(ctx context.Context, transactionHash string) (*Snapshot, error) {
+	query := "SELECT hash, transaction_hash, topology, timestamp FROM snapshots WHERE transaction_hash=$1"
+	row := session.Database(ctx).QueryRowContext(ctx, query, transactionHash)
 	snapshot, err := snapshotFromRow(row)
 	if err == sql.ErrNoRows {
 		return &Snapshot{}, nil
