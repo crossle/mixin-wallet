@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/MixinNetwork/mixin-wallet/durable"
 	"github.com/MixinNetwork/mixin-wallet/session"
 )
 
@@ -20,10 +21,10 @@ CREATE INDEX IF NOT EXISTS index_snapshots_topology ON snapshots(topology);
 `
 
 type Snapshot struct {
-	Hash             string
-	topology         int64
-	timestamp        int64
-	transaction_hash string
+	Hash            string
+	Topology        int64
+	Timestamp       int64
+	TransactionHash string
 }
 
 func CreateSnapshot(ctx context.Context, hash string, topology, timestamp int64, transactionHash string) error {
@@ -46,4 +47,22 @@ func CreateSnapshot(ctx context.Context, hash string, topology, timestamp int64,
 		return nil
 	})
 	return err
+}
+
+func QuerySnapshotByHash(ctx context.Context, hash string) (*Snapshot, error) {
+	query := "SELECT hash, transaction_hash, topology, timestamp FROM snapshots WHERE hash=$1"
+	row := session.Database(ctx).QueryRowContext(ctx, query, hash)
+	snapshot, err := snapshotFromRow(row)
+	if err == sql.ErrNoRows {
+		return &Snapshot{}, nil
+	} else if err != nil {
+		return nil, session.TransactionError(ctx, err)
+	}
+	return snapshot, nil
+}
+
+func snapshotFromRow(row durable.Row) (*Snapshot, error) {
+	var s Snapshot
+	err := row.Scan(&s.Hash, &s.TransactionHash, &s.Topology, &s.Timestamp)
+	return &s, err
 }

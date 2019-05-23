@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/MixinNetwork/mixin-wallet/mixin"
+	"github.com/MixinNetwork/mixin-wallet/models"
 	"github.com/MixinNetwork/mixin-wallet/views"
 	"github.com/dimfeld/httptreemux"
 )
@@ -93,10 +94,15 @@ func getSnapshots(w http.ResponseWriter, r *http.Request, params map[string]stri
 }
 func getSnapshot(w http.ResponseWriter, r *http.Request, params map[string]string) {
 	rpc := mixin.NewMixinNetwork(node)
-	since, err := strconv.ParseUint(params["id"], 10, 64)
+	id := params["id"]
+	since, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
-		views.RenderErrorResponse(w, r, err)
-		return
+		snapshot, err := models.QuerySnapshotByHash(r.Context(), id)
+		if err != nil {
+			views.RenderErrorResponse(w, r, err)
+			return
+		}
+		since = uint64(snapshot.Topology)
 	}
 	snapshots, err := rpc.ListSnapshotsSince(since, 1)
 	if err != nil || len(snapshots) != 1 {
