@@ -17,6 +17,7 @@ func init() {
 }
 
 func RegisterRoutes(router *httptreemux.TreeMux) {
+	router.GET("/createaddress", createAddress)
 	router.GET("/getinfo", getNodeInfo)
 	router.GET("/height", getHeight)
 	router.GET("/snapshots", getSnapshots)
@@ -24,6 +25,20 @@ func RegisterRoutes(router *httptreemux.TreeMux) {
 	router.GET("/transactions/:id/utxo", getTransactionUTXO)
 	router.GET("/transactions/:id", getTransaction)
 	router.POST("/transactions", postRaw)
+	router.GET("/account/:id", getAccount)
+}
+
+func getAccount(w http.ResponseWriter, r *http.Request, params map[string]string) {
+
+}
+
+func createAddress(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	address, view, spend, err := mixin.LocalGenerateKey()
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, map[string]interface{}{"address": address, "view": view, "spend": spend})
 }
 
 func getNodeInfo(w http.ResponseWriter, r *http.Request, params map[string]string) {

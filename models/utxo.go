@@ -58,6 +58,10 @@ func queryForRow(utxoId string) {
 
 }
 
+func GetAmountByViewKey(ctx context.Context, view string) {
+
+}
+
 func CreateOrUpdateUTXOs(ctx context.Context, tx *mixin.Transaction, timestamp uint64) error {
 	for _, input := range tx.Inputs {
 		if input.Hash == "" {

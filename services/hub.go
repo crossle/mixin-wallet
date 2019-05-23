@@ -31,4 +31,5 @@ func (hub *Hub) StartService(name string) error {
 
 func (hub *Hub) registerServices() {
 	hub.services["scan"] = &ScanService{}
+	hub.services["snap"] = &SnapService{}
 }

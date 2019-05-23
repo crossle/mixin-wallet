@@ -31,7 +31,7 @@ func (service *ScanService) Run(ctx context.Context) error {
 func (service *ScanService) loopSnapshots(ctx context.Context) {
 	rpc := mixin.NewMixinNetwork(node)
 	for {
-		checkpoint, err := readSnapshotCheckPoint(ctx)
+		checkpoint, err := readSnapshotCheckPoint(ctx, models.MainnetSnapshotsCheckpoint)
 		if err != nil {
 			time.Sleep(1 * time.Second)
 			continue
@@ -45,6 +45,10 @@ func (service *ScanService) loopSnapshots(ctx context.Context) {
 		for _, s := range snapshots {
 			checkpoint = s.Topology
 			tx := &s.Transaction
+			if err := models.CreateSnapshot(ctx, s.Hash, int64(s.Topology), int64(s.Timestamp), tx.Hash); err != nil {
+				log.Println(err)
+				break
+			}
 			if err := models.CreateOrUpdateUTXOs(ctx, tx, s.Timestamp); err != nil {
 				log.Println(err)
 				break
@@ -63,8 +67,8 @@ func (service *ScanService) loopSnapshots(ctx context.Context) {
 	}
 }
 
-func readSnapshotCheckPoint(ctx context.Context) (uint64, error) {
-	since, err := models.ReadProperty(ctx, models.MainnetSnapshotsCheckpoint)
+func readSnapshotCheckPoint(ctx context.Context, key string) (uint64, error) {
+	since, err := models.ReadProperty(ctx, key)
 	if err != nil {
 		log.Println(err)
 		return 0, err
