@@ -22,10 +22,10 @@ CREATE INDEX IF NOT EXISTS index_snapshots_transaction_hash ON snapshots(transac
 `
 
 type Snapshot struct {
-	Hash            string `json:"hash"`
-	Topology        int64  `json:"topology"`
-	Timestamp       int64  `json:"timestamp"`
-	TransactionHash string `json:"transaction_hash"`
+	Hash            string    `json:"hash"`
+	Topology        int64     `json:"topology"`
+	Timestamp       time.Time `json:"timestamp"`
+	TransactionHash string    `json:"transaction_hash"`
 }
 
 func CreateSnapshot(ctx context.Context, hash string, topology, timestamp int64, transactionHash string) error {
