@@ -16,9 +16,6 @@ func LocalGenerateKey() (string, string, string, error) {
 		return "", "", "", err
 	}
 	addr := common.NewAddressFromSeed(seed)
-	fmt.Printf("address:\t%s\n", addr.String())
-	fmt.Printf("view key:\t%s\n", addr.PrivateViewKey.String())
-	fmt.Printf("spend key:\t%s\n", addr.PrivateSpendKey.String())
 	return addr.String(), addr.PrivateViewKey.String(), addr.PrivateSpendKey.String(), nil
 }
 
@@ -57,8 +54,5 @@ func LocalGenerateAddress(viewKey, spendKey string) (*common.Address, error) {
 	}
 	copy(addr.PrivateSpendKey[:], key)
 	addr.PublicSpendKey = addr.PrivateSpendKey.Public()
-	fmt.Printf("address:\t%s\n", addr.String())
-	fmt.Printf("view key:\t%s\n", addr.PrivateViewKey.String())
-	fmt.Printf("spend key:\t%s\n", addr.PrivateSpendKey.String())
 	return &addr, nil
 }
