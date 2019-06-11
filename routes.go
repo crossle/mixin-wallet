@@ -35,12 +35,12 @@ func getAccount(w http.ResponseWriter, r *http.Request, params map[string]string
 }
 
 func createAddress(w http.ResponseWriter, r *http.Request, params map[string]string) {
-	address, view, spend, err := mixin.LocalGenerateKey()
+	key, err := mixin.LocalGenerateKey()
 	if err != nil {
 		views.RenderErrorResponse(w, r, err)
 		return
 	}
-	views.RenderDataResponse(w, r, map[string]interface{}{"address": address, "view": view, "spend": spend})
+	views.RenderDataResponse(w, r, map[string]interface{}{"address": key.Address, "view": key.ViewKey, "spend": key.SpendKey})
 }
 
 func getNodeInfo(w http.ResponseWriter, r *http.Request, params map[string]string) {

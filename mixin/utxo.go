@@ -52,7 +52,7 @@ func (tx *Transaction) UTXOs(view crypto.Key) []*UTXO {
 		utxo.Receiver = pub.String()
 
 		tb, _ := hex.DecodeString(tx.Extra)
-		utxo.Extra = uuid.FromBytesOrNil(tb).String()
+		utxo.Extra = uuid.FromStringOrNil(string(tb)).String()
 		utxos = append(utxos, utxo)
 	}
 

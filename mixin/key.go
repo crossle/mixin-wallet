@@ -9,14 +9,20 @@ import (
 	"github.com/MixinNetwork/mixin/crypto"
 )
 
-func LocalGenerateKey() (string, string, string, error) {
+type MixinKey struct {
+	Address  string
+	ViewKey  string
+	SpendKey string
+}
+
+func LocalGenerateKey() (MixinKey, error) {
 	seed := make([]byte, 64)
 	_, err := rand.Read(seed)
 	if err != nil {
-		return "", "", "", err
+		return MixinKey{}, err
 	}
 	addr := common.NewAddressFromSeed(seed)
-	return addr.String(), addr.PrivateViewKey.String(), addr.PrivateSpendKey.String(), nil
+	return MixinKey{Address: addr.String(), ViewKey: addr.PrivateViewKey.String(), SpendKey: addr.PrivateSpendKey.String()}, nil
 }
 
 func ParseKeyFromHex(src string) (crypto.Key, error) {
