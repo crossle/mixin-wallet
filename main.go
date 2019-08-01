@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/MixinNetwork/mixin-wallet/config"
-	"github.com/MixinNetwork/mixin-wallet/durable"
-	"github.com/MixinNetwork/mixin-wallet/services"
+	"github.com/crossle/mixin-wallet/config"
+	"github.com/crossle/mixin-wallet/durable"
+	"github.com/crossle/mixin-wallet/services"
 )
 
 func main() {

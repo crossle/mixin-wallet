@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/MixinNetwork/mixin-wallet/session"
-	"github.com/MixinNetwork/mixin-wallet/views"
+	"github.com/crossle/mixin-wallet/session"
+	"github.com/crossle/mixin-wallet/views"
 	"github.com/dimfeld/httptreemux"
 )
 

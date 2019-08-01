@@ -3,8 +3,8 @@ package middlewares
 import (
 	"net/http"
 
-	"github.com/MixinNetwork/mixin-wallet/durable"
-	"github.com/MixinNetwork/mixin-wallet/session"
+	"github.com/crossle/mixin-wallet/durable"
+	"github.com/crossle/mixin-wallet/session"
 	"github.com/unrolled/render"
 )
 

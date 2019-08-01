@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/MixinNetwork/mixin-wallet/mixin"
-	"github.com/MixinNetwork/mixin-wallet/models"
+	"github.com/crossle/mixin-wallet/mixin"
+	"github.com/crossle/mixin-wallet/models"
 )
 
 type ScanService struct{}

@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/MixinNetwork/mixin-wallet/mixin"
-	"github.com/MixinNetwork/mixin-wallet/models"
-	"github.com/MixinNetwork/mixin-wallet/views"
+	"github.com/crossle/mixin-wallet/mixin"
+	"github.com/crossle/mixin-wallet/models"
+	"github.com/crossle/mixin-wallet/views"
 	"github.com/dimfeld/httptreemux"
 )
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/MixinNetwork/mixin-wallet/durable"
+	"github.com/crossle/mixin-wallet/durable"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/unrolled/render"
 )

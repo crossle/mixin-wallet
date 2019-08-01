@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/MixinNetwork/mixin-wallet/mixin"
-	"github.com/MixinNetwork/mixin-wallet/session"
+	"github.com/crossle/mixin-wallet/mixin"
+	"github.com/crossle/mixin-wallet/session"
 	"github.com/gofrs/uuid"
 	"github.com/lib/pq"
 )

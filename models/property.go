@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/MixinNetwork/mixin-wallet/session"
+	"github.com/crossle/mixin-wallet/session"
 )
 
 const properties_DDL = `

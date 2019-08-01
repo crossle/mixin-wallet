@@ -3,7 +3,7 @@ package views
 import (
 	"net/http"
 
-	"github.com/MixinNetwork/mixin-wallet/session"
+	"github.com/crossle/mixin-wallet/session"
 )
 
 type ResponseView struct {

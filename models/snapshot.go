@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/MixinNetwork/mixin-wallet/durable"
-	"github.com/MixinNetwork/mixin-wallet/session"
+	"github.com/crossle/mixin-wallet/durable"
+	"github.com/crossle/mixin-wallet/session"
 )
 
 const snapshots_DDL = `

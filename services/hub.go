@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/MixinNetwork/mixin-wallet/durable"
-	"github.com/MixinNetwork/mixin-wallet/session"
+	"github.com/crossle/mixin-wallet/durable"
+	"github.com/crossle/mixin-wallet/session"
 )
 
 type Hub struct {
