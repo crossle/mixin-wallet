@@ -1,0 +1,13 @@
+[Unit]
+Description=API MixinWallet
+After=network.target
+
+[Service]
+User=one
+Type=simple
+ExecStart=/home/one/app/wallet/mixin-wallet
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
