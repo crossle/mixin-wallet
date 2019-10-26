@@ -116,7 +116,11 @@ func getSnapshot(w http.ResponseWriter, r *http.Request, params map[string]strin
 }
 
 func getTransaction(w http.ResponseWriter, r *http.Request, params map[string]string) {
-	rpc := mixin.NewMixinNetwork(node)
+	n := r.URL.Query().Get("node")
+	if n == "" {
+		n = node
+	}
+	rpc := mixin.NewMixinNetwork(n)
 	transaction, err := rpc.GetTransaction(params["id"])
 	if err != nil {
 		views.RenderErrorResponse(w, r, err)
