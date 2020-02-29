@@ -20,6 +20,7 @@ func init() {
 func RegisterRoutes(router *httptreemux.TreeMux) {
 	router.GET("/createaddress", createAddress)
 	router.GET("/getinfo", getNodeInfo)
+	router.GET("/listallnodes", getAllNodes)
 	router.GET("/height", getHeight)
 	router.GET("/snapshots", getSnapshots)
 	router.GET("/snapshots/:id", getSnapshot)
@@ -55,6 +56,20 @@ func getNodeInfo(w http.ResponseWriter, r *http.Request, params map[string]strin
 		return
 	}
 	views.RenderDataResponse(w, r, nodeInfo)
+}
+
+func getAllNodes(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	n := r.URL.Query().Get("node")
+	if n == "" {
+		n = node
+	}
+	rpc := mixin.NewMixinNetwork(n)
+	nodes, err := rpc.ListAllNodes()
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, nodes)
 }
 
 func getHeight(w http.ResponseWriter, r *http.Request, params map[string]string) {

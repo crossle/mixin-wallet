@@ -46,6 +46,15 @@ type SnapshotWithTransaction struct {
 	Transaction Transaction `json:"transaction"`
 }
 
+type Node struct {
+	Id          string `json:"id`
+	Signer      string `json:"signer"`
+	Payee       string `json:"payee"`
+	Transaction string `json:"transaction"`
+	Timestamp   int64  `json:"timestamp"`
+	State       string `json:"state"`
+}
+
 type NodeInfo struct {
 	Network string `json:"network"`
 	Node    string `json:"node"`
@@ -138,6 +147,16 @@ func (m *MixinNetwork) GetInfo() (*NodeInfo, error) {
 		return nil, err
 	}
 	return &nodeInfo, nil
+}
+
+func (m *MixinNetwork) ListAllNodes() ([]*Node, error) {
+	body, err := m.callRPC("listallnodes", []interface{}{})
+	if err != nil {
+		return nil, err
+	}
+	var nodes []*Node
+	err = json.Unmarshal(body, &nodes)
+	return nodes, err
 }
 
 func (m *MixinNetwork) callRPC(method string, params []interface{}) ([]byte, error) {
