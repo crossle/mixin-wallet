@@ -14,7 +14,7 @@ import (
 var node string
 
 func init() {
-	node = "http://mixin-node-04.b1.run:8239"
+	node = "http://mixin-node-01.b1.run:8239"
 }
 
 func RegisterRoutes(router *httptreemux.TreeMux) {
