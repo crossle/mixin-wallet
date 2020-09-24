@@ -79,7 +79,7 @@ type NodeInfo struct {
 
 func NewMixinNetwork(node string) *MixinNetwork {
 	return &MixinNetwork{
-		httpClient: &http.Client{Timeout: 10 * time.Second},
+		httpClient: &http.Client{Timeout: 20 * time.Second},
 		node:       node,
 	}
 }
