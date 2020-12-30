@@ -144,7 +144,7 @@ func (m *MixinNetwork) ListSnapshotsSince(since, count uint64) ([]*SnapshotWithT
 }
 
 func (m *MixinNetwork) ListMintDistributions() ([]*Mint, error) {
-	body, err := m.callRPC("listmintdistributions", []interface{}{600, 500})
+	body, err := m.callRPC("listmintdistributions", []interface{}{600, 500, false})
 	if err != nil {
 		return nil, err
 	}
@@ -170,7 +170,7 @@ func (m *MixinNetwork) GetInfo() (*NodeInfo, error) {
 }
 
 func (m *MixinNetwork) ListAllNodes() ([]*Node, error) {
-	body, err := m.callRPC("listallnodes", []interface{}{})
+	body, err := m.callRPC("listallnodes", []interface{}{0, false})
 	if err != nil {
 		return nil, err
 	}
