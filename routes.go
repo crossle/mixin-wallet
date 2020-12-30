@@ -22,6 +22,7 @@ func RegisterRoutes(router *httptreemux.TreeMux) {
 	router.GET("/getinfo", getNodeInfo)
 	router.GET("/listallnodes", getAllNodes)
 	router.GET("/height", getHeight)
+	router.GET("/listmintdistributions", GetListMintDistributions)
 	router.GET("/snapshots", getSnapshots)
 	router.GET("/snapshots/:id", getSnapshot)
 	router.GET("/transactions/:id/utxo", getTransactionUTXO)
@@ -29,6 +30,20 @@ func RegisterRoutes(router *httptreemux.TreeMux) {
 	router.GET("/transactions/:id/snapshot", getTransactionSnapshot)
 	router.POST("/transactions", postRaw)
 	router.GET("/account/:id", getAccount)
+}
+
+func GetListMintDistributions(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	n := r.URL.Query().Get("node")
+	if n == "" {
+		n = node
+	}
+	rpc := mixin.NewMixinNetwork(n)
+	mints, err := rpc.ListMintDistributions()
+	if err != nil {
+		views.RenderErrorResponse(w, r, err)
+		return
+	}
+	views.RenderDataResponse(w, r, mints)
 }
 
 func getAccount(w http.ResponseWriter, r *http.Request, params map[string]string) {

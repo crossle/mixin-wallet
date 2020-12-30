@@ -77,6 +77,13 @@ type NodeInfo struct {
 	} `json:"graph"`
 }
 
+type Mint struct {
+	Group       string `json:"group"`
+	Amount      string `json:"amount"`
+	Batch       int64  `json:"batch"`
+	Transaction string `json:"transaction"`
+}
+
 func NewMixinNetwork(node string) *MixinNetwork {
 	return &MixinNetwork{
 		httpClient: &http.Client{Timeout: 30 * time.Second},
@@ -134,6 +141,19 @@ func (m *MixinNetwork) ListSnapshotsSince(since, count uint64) ([]*SnapshotWithT
 	var snapshots []*SnapshotWithTransaction
 	err = json.Unmarshal(body, &snapshots)
 	return snapshots, err
+}
+
+func (m *MixinNetwork) ListMintDistributions() ([]*Mint, error) {
+	body, err := m.callRPC("listmintdistributions", []interface{}{600, 500})
+	if err != nil {
+		return nil, err
+	}
+	var mints []*Mint
+	err = json.Unmarshal(body, &mints)
+	if err != nil {
+		return nil, err
+	}
+	return mints, nil
 }
 
 func (m *MixinNetwork) GetInfo() (*NodeInfo, error) {
