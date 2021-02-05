@@ -29,7 +29,6 @@ func RegisterRoutes(router *httptreemux.TreeMux) {
 	router.GET("/transactions/:id", getTransaction)
 	router.GET("/transactions/:id/snapshot", getTransactionSnapshot)
 	router.POST("/transactions", postRaw)
-	router.GET("/account/:id", getAccount)
 }
 
 func GetListMintDistributions(w http.ResponseWriter, r *http.Request, params map[string]string) {
@@ -44,10 +43,6 @@ func GetListMintDistributions(w http.ResponseWriter, r *http.Request, params map
 		return
 	}
 	views.RenderDataResponse(w, r, mints)
-}
-
-func getAccount(w http.ResponseWriter, r *http.Request, params map[string]string) {
-
 }
 
 func createAddress(w http.ResponseWriter, r *http.Request, params map[string]string) {
