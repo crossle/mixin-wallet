@@ -80,7 +80,7 @@ type NodeInfo struct {
 		Batch  int64  `json:"batch"`
 		Pledge string `json:"pledge"`
 		Pool   string `json:"pool"`
-	}
+	} `json:"mint"`
 }
 
 type Mint struct {
