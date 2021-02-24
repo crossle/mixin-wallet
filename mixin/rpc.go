@@ -68,13 +68,19 @@ type NodeInfo struct {
 	Graph struct {
 		Topology  int64 `json:"topology"`
 		Consensus []struct {
-			Node      string `json:"node"`
-			Payee     string `json:"payee"`
-			Signer    string `json:"signer"`
-			State     string `json:"state"`
-			Timestamp int64  `json:"timestamp"`
+			Node      string  `json:"node"`
+			Payee     string  `json:"payee"`
+			Signer    string  `json:"signer"`
+			State     string  `json:"state"`
+			Timestamp int64   `json:"timestamp"`
+			Works     []int64 `json:"works"`
 		} `json:"consensus"`
 	} `json:"graph"`
+	Mint struct {
+		Batch  int64  `json:"batch"`
+		Pledge string `json:"pledge"`
+		Pool   string `json:"pool"`
+	}
 }
 
 type Mint struct {
