@@ -14,7 +14,7 @@ import (
 var node string
 
 func init() {
-	node = "http://mixin-node-01.b1.run:8239"
+	node = "https://rpc.mixin.dev"
 }
 
 func RegisterRoutes(router *httptreemux.TreeMux) {

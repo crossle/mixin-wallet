@@ -20,7 +20,7 @@ const (
 var node string
 
 func init() {
-	node = "http://35.188.235.212:8239"
+	node = "https://rpc.mixin.dev"
 }
 
 func (service *ScanService) Run(ctx context.Context) error {
