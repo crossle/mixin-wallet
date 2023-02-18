@@ -7,7 +7,7 @@ require (
 	github.com/MixinNetwork/mixin v0.13.12
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
 	github.com/facebookgo/grace v0.0.0-20180706040059-75cf19382434
-	github.com/gofrs/uuid v4.2.0+incompatible
+	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/gorilla/handlers v1.5.1
 	github.com/lib/pq v1.2.0
