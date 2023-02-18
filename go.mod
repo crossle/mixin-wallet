@@ -10,7 +10,7 @@ require (
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/gorilla/handlers v1.5.1
-	github.com/lib/pq v1.2.0
+	github.com/lib/pq v1.10.7
 	github.com/unrolled/render v1.5.0
 )
 
