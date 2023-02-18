@@ -11,7 +11,7 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/gorilla/handlers v1.5.1
 	github.com/lib/pq v1.2.0
-	github.com/unrolled/render v1.0.3
+	github.com/unrolled/render v1.5.0
 )
 
 require (
@@ -34,6 +34,7 @@ require (
 	github.com/facebookgo/stats v0.0.0-20151006221625-1b76add642e4 // indirect
 	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/felixge/httpsnoop v1.0.1 // indirect
+	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/jadeydi/mobilecoin-account v1.2.5 // indirect
 	github.com/klauspost/compress v1.15.9 // indirect
