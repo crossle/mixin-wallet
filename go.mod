@@ -3,7 +3,7 @@ module github.com/crossle/mixin-wallet
 go 1.19
 
 require (
-	github.com/MixinNetwork/go-number v0.0.0-20180814121220-f48e2574d9ef
+	github.com/MixinNetwork/go-number v0.1.0
 	github.com/MixinNetwork/mixin v0.14.19
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
 	github.com/facebookgo/grace v0.0.0-20180706040059-75cf19382434
